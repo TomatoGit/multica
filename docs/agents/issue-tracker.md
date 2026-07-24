@@ -4,20 +4,15 @@
 
 ## 约定
 
-- **创建 Issue**：`gh issue create --title "..." --body "..."`。多行正文使用 heredoc。
-- **读取 Issue**：`gh issue view <编号> --comments`，同时获取标签，并按需使用 `jq` 过滤评论。
-- **列出 Issue**：`gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'`，根据任务添加合适的 `--label` 与 `--state` 过滤条件。
-- **评论 Issue**：`gh issue comment <编号> --body "..."`
+- **确认仓库**：首次操作运行 `gh repo view --json nameWithOwner,hasIssuesEnabled`；结果不符时用 `--repo` 指定，未启用 Issues 时停止。
+- **判定裸编号**：收到未注明类型的 `#<编号>` 时，先运行 `gh pr view <编号>`；成功则按 PR 流程处理，失败后再运行 `gh issue view <编号>`。
+- **检索重复 Issue**：创建前运行 `gh issue list --state all --limit 100 --search "<关键词> in:title,body" --json number,title,state,url`。
+- **创建 Issue**：使用 `gh issue create --title "..." --label "..." --body-file - <<'EOF'`，正文结束后以独占一行的 `EOF` 收尾。Bug/Feature 应覆盖对应 `.github/ISSUE_TEMPLATE/*.yml` 的必填信息；其他工单至少包含背景、目标和验收标准。记录命令返回的 Issue URL。
+- **读取 Issue**：运行 `gh issue view <编号> --json number,title,body,state,stateReason,labels,assignees,comments,url --jq '{number,title,state,stateReason,body,labels:[.labels[].name],assignees:[.assignees[].login],comments:[.comments[].body],url}'`。
+- **列出 Issue**：运行 `gh issue list --state open --limit 100 --json number,title,state,labels,assignees,url`，并按任务添加 `--search`、`--label` 或 `--state`；需要正文或评论时再逐条读取。
+- **评论 Issue**：单行使用 `gh issue comment <编号> --body "..."`，多行使用 `--body-file -` 和 heredoc。
 - **添加或移除标签**：`gh issue edit <编号> --add-label "..."` / `--remove-label "..."`
 - **关闭 Issue**：`gh issue close <编号> --comment "..."`
-
-仓库信息从 `git remote -v` 推断；在本仓库克隆目录中运行时，`gh` 会自动识别仓库。
-
-## 将 Pull Request 作为 triage 入口
-
-**PRs as a request surface: no.**
-
-GitHub 的 Issue 与 PR 共用编号空间，因此裸编号 `#42` 可能代表两者之一。先运行 `gh pr view 42`，失败后再运行 `gh issue view 42`。
 
 ## 当技能要求“发布到问题跟踪器”
 
