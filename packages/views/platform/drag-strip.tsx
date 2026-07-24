@@ -15,9 +15,9 @@ import type { CSSProperties } from "react";
  * 48px of top breathing room. That makes it safe to keep in shared
  * `packages/views/` without platform branching.
  *
- * Flex child, **not** absolute overlay: `-webkit-app-region` hit-testing
- * with z-index stacking has been empirically unreliable in this codebase
- * (see CLAUDE.md "Drag region" note).
+ * 使用 flex child，不使用绝对定位覆盖层：本项目实测 `-webkit-app-region`
+ * 与 z-index 叠层共同使用时命中测试不可靠。见
+ * docs/agents/desktop.md 的窗口拖拽规则。
  */
 export function DragStrip() {
   return (

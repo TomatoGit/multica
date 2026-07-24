@@ -40,9 +40,8 @@ import type {
 
 // --- Status visuals -------------------------------------------------------
 
-// Mapping is exhaustive over the current backend enum but every consumer
-// site falls back to a generic "unknown" visual when the server adds a new
-// value — see the API Response Compatibility rules in CLAUDE.md.
+// 当前映射穷举后端已有枚举，但服务端新增取值时，每个使用方都必须回退到通用的
+// “unknown”视觉。见 docs/agents/frontend.md「API 响应」。
 type StatusVisual = {
   color: string;
   icon: typeof CheckCircle2;

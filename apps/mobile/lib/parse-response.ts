@@ -1,8 +1,7 @@
 /**
- * Mobile-owned parseWithFallback. Mirrors packages/core/api/schema.ts —
- * the boundary defense for installed-app schema drift required by root
- * CLAUDE.md "API Response Compatibility" and apps/mobile/CLAUDE.md
- * "Type drift defense".
+ * Mobile 自有的 parseWithFallback，对应 packages/core/api/schema.ts。
+ * 它是已安装应用应对 schema 漂移的边界防线，规则见 apps/mobile/CLAUDE.md
+ *「Data layer helpers」。
  *
  * Why we mirror instead of import: keeps mobile fully decoupled and lets
  * us route the warning into mobile's own logger instead of the core

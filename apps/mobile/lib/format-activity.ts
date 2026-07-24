@@ -4,11 +4,9 @@
  * English-only copy (mobile v1 is English-only; mirror the structure when
  * mobile gains i18n).
  *
- * Unknown actions fall through to the raw string in `entry.action`. NEVER
- * throw and NEVER drop the row — that's the API Response Compatibility rule
- * from repo-root CLAUDE.md (server may add new action enum values; older
- * mobile clients in the wild must render them as a generic fallback, not
- * crash).
+ * 未知 action 回退为 `entry.action` 原始字符串，绝不能抛错或丢弃该行。
+ * 服务端可能新增 action 枚举，已安装的旧版 Mobile 必须以通用回退继续渲染，
+ * 不能崩溃。见 apps/mobile/CLAUDE.md「Behavioral parity with web/desktop」。
  */
 import type {
   IssuePriority,
@@ -126,4 +124,3 @@ export function formatActivity(
       return entry.action ?? "";
   }
 }
-

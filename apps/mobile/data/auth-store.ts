@@ -5,9 +5,10 @@
  *     the next launch can retry
  *   - logout = clear token + clear in-memory user + setToken(null)
  *
- * NOT shared with web/desktop (per Sharing Principles in root CLAUDE.md).
- * Storage backend is expo-secure-store (mobile only); web uses HttpOnly
- * cookies, desktop uses localStorage via StorageAdapter.
+ * 不与 Web/Desktop 共享，边界见 apps/mobile/CLAUDE.md
+ *「What mobile may import from packages」。存储后端为 Mobile 专用的
+ * expo-secure-store；Web 使用 HttpOnly cookie，Desktop 通过
+ * StorageAdapter 使用 localStorage。
  */
 import { create } from "zustand";
 import type { User } from "@multica/core/types";

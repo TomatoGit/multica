@@ -34,11 +34,10 @@ type Template struct {
 	// falls back to a generic "FileText" icon on the frontend.
 	Icon string `json:"icon,omitempty"`
 
-	// Accent picks the semantic color token used to tint the icon badge:
-	// one of "info" / "success" / "warning" / "primary" / "secondary".
-	// Empty falls back to "muted" on the frontend. Hardcoded color values
-	// (text-red-500, bg-blue-100, …) are explicitly NOT allowed — accent
-	// must be a Multica design-system token name (see CLAUDE.md).
+	// Accent 指定图标徽章使用的语义颜色 token，可选 "info"、"success"、
+	// "warning"、"primary" 或 "secondary"。空值在前端回退为 "muted"；
+	// 禁止使用 text-red-500、bg-blue-100 等硬编码颜色。详见
+	// docs/agents/frontend.md「共享与路由」。
 	Accent string `json:"accent,omitempty"`
 
 	// Instructions is the verbatim text written into the created agent's

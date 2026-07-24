@@ -1,14 +1,13 @@
 /**
  * Mirror of `packages/views/agents/components/tabs/task-failure.ts:failureReasonLabel`.
  *
- * Why mirror: mobile cannot import from packages/views per the apps/mobile
- * CLAUDE.md sharing rule. The enum itself comes from packages/core/types
- * (type-only import is fine); only the human copy is mobile-owned.
+ * 之所以镜像：根据 apps/mobile/CLAUDE.md
+ *「What mobile may import from packages」，Mobile 不能导入 packages/views。
+ * 枚举本身通过 type-only 从 packages/core/types 导入，只有展示文案归 Mobile。
  *
- * Used by the destructive chat bubble. The default branch handles enum
- * drift — unknown values render a generic "Failed" rather than crashing
- * or rendering the raw enum string, matching the root CLAUDE.md "Enum
- * drift downgrades, not crashes" rule.
+ * 用于 destructive chat bubble。default 分支处理枚举漂移：未知取值显示通用
+ * “Failed”，而不是崩溃或直接展示原始枚举字符串。见 apps/mobile/CLAUDE.md
+ *「Behavioral parity with web/desktop」。
  */
 import type { TaskFailureReason } from "@multica/core/types";
 

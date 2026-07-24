@@ -226,12 +226,11 @@ func TestSetAgentRuntimeSkillEnabledPersistsScopedOverride(t *testing.T) {
 	}
 }
 
-// TestGetSkill_MalformedUUIDReturns400 guards the handler UUID parsing
-// convention (CLAUDE.md → "Backend Handler UUID Parsing Convention"): raw
-// `id` URL params on the request boundary must be validated with
-// parseUUIDOrBadRequest, not the panic-prone parseUUID. Before the fix
-// the malformed input panicked in MustParseUUID and was rescued by the
-// chi Recoverer middleware as a 500.
+// TestGetSkill_MalformedUUIDReturns400 守护 handler 的 UUID 解析约定：
+// 请求边界上的原始 `id` URL 参数必须用 parseUUIDOrBadRequest 校验，不能使用
+// 可能 panic 的 parseUUID。修复前，非法输入会在 MustParseUUID 中 panic，
+// 再由 chi Recoverer 中间件转换成 500。详见 docs/agents/backend.md
+//「Handler 与访问边界」。
 func TestGetSkill_MalformedUUIDReturns400(t *testing.T) {
 	w := httptest.NewRecorder()
 	req := newRequest("GET", "/api/skills/not-a-uuid", nil)

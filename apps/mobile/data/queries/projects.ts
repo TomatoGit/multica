@@ -5,9 +5,9 @@
  *   - Detail     (projectKeys.detail)     — `Project`
  *   - Resources  (projectKeys.resources)  — `ProjectResource[]` (per project)
  *
- * Detail and Resources are workspace-scoped via the `wsId` segment so
- * switching workspaces flips the cache without manual invalidate, per the
- * root CLAUDE.md "Workspace-scoped queries must key on wsId" rule.
+ * Detail 和 Resources 通过 `wsId` 片段按 workspace 划分；切换 workspace
+ * 会直接切换缓存，无需手动 invalidate。见 apps/mobile/CLAUDE.md
+ *「Query / mutation factory pattern」。
  *
  * Issues belonging to a project are NOT a project query — they live under
  * `issueKeys.list(wsId, { project_id })` and reuse the issues cache shape.

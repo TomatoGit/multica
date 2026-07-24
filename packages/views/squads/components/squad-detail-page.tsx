@@ -1067,12 +1067,10 @@ function SquadOverviewPane({
   );
 }
 
-// Visual config for the five squad member status buckets. Mirrors
-// availabilityConfig + workloadConfig in packages/views/agents/presence.ts —
-// same semantic tokens so a status dot here matches the agent page's dot.
-// Unknown / null statuses (human members, server-side enum drift) render as
-// a neutral muted pill; this is the "downgrade, don't crash" defense from
-// CLAUDE.md > API Response Compatibility.
+// 五类 squad 成员状态的视觉配置，与 packages/views/agents/presence.ts 中的
+// availabilityConfig 和 workloadConfig 使用相同语义 token，确保状态点一致。
+// 未知或 null 状态（人类成员、服务端枚举漂移）显示为中性的 muted 标记。
+// 见 docs/agents/frontend.md「API 响应」。
 const SQUAD_STATUS_DOT_CLASS: Record<SquadMemberStatusValue, string> = {
   working: "bg-success",
   idle: "bg-muted-foreground/40",

@@ -20,6 +20,8 @@ Pre-workspace routes (the routes that exist before the user is in a workspace) M
 
 Hyphenated word groups at the root collide with user-chosen workspace slugs and force endless reserved-slug audits. Reserving the noun (`workspaces`) automatically protects the entire `/workspaces/*` subtree.
 
+When changing reserved slugs, update both `server/internal/handler/reserved_slugs.json` and the generated `packages/core/paths/reserved-slugs.ts`.
+
 ### Workspace-scoped routes
 
 Always live under `/{slug}/{section}` — `/{slug}/issues`, `/{slug}/agents`, `/{slug}/settings`. Never duplicate workspace routing logic; use `useNavigation().push()` from shared code, never framework-specific link APIs.
@@ -59,7 +61,7 @@ If logic appears in both apps, it MUST be extracted to a shared package. There a
 - Standard `gofmt` + `go vet`. No exceptions.
 - Handler files mirror domain: `agent.go`, `auth.go`, `runtime.go`
 - Tests: `<file>_test.go` colocated
-- For UUID parsing in handlers, follow the rule in the root `CLAUDE.md` — `parseUUIDOrBadRequest` for boundary input, `parseUUID` (panicking) for trusted round-trips, never `util.ParseUUID` directly without checking the error.
+- For UUID parsing in handlers, follow `docs/agents/backend.md`.
 
 ### TypeScript
 
@@ -74,7 +76,7 @@ Every issue has a human-readable key like `MUL-123`: workspace `issue_prefix` (u
 
 ### Comments in code
 
-English only. The repo enforces this for both Go and TypeScript. If you find a Chinese comment in code, it's a bug — replace it.
+Chinese only. This applies to both Go and TypeScript; translate English code comments into Chinese.
 
 ### Commit messages
 
@@ -296,7 +298,7 @@ When the glossary doesn't cover a term, look at:
 
 If you change a rule here, also:
 
-1. Apply it in the relevant locale JSONs / CLAUDE.md / docs page
+1. Apply it in the relevant locale JSONs and docs pages; if it changes agent behavior, update the corresponding `docs/agents/*.md`
 2. Note the change in the PR description so reviewers know to look for downstream sweep
 
 This page is the contract; nothing else overrides it.

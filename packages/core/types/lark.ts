@@ -1,9 +1,8 @@
-/** A Lark Bot installation bound to a single Multica agent.
+/** 绑定到单个 Multica agent 的 Lark Bot 安装记录。
  *
- * Wire shape mirrors `LarkInstallationResponse` in
- * `server/internal/handler/lark.go`. New fields the backend adds in the
- * future MUST default to optional so older desktop builds keep parsing
- * the response — see CLAUDE.md → API Response Compatibility. */
+ * 传输结构对应 `server/internal/handler/lark.go` 中的
+ * `LarkInstallationResponse`。后端后续新增字段必须保持可选，确保旧版桌面端
+ * 仍能解析响应。见 docs/agents/frontend.md「API 响应」。 */
 export interface LarkInstallation {
   id: string;
   workspace_id: string;
@@ -13,11 +12,9 @@ export interface LarkInstallation {
   bot_open_id: string;
   installer_user_id: string;
   status: "active" | "revoked" | string;
-  /** Which Lark cloud the bot lives on: "feishu" (mainland) or "lark"
-   * (international). Auto-detected at install time. Optional so an older
-   * desktop build parsing a newer server — or a newer build hitting a
-   * server that predates the field — defaults to Feishu in the UI
-   * (see CLAUDE.md → API Response Compatibility). */
+  /** 机器人所在的 Lark 云："feishu"（中国大陆）或 "lark"（国际版）。
+   * 安装时自动检测。字段保持可选，使新旧客户端与服务端组合都能在 UI
+   * 回退到飞书。见 docs/agents/frontend.md「API 响应」。 */
   region?: "feishu" | "lark" | string;
   installed_at: string;
   created_at: string;

@@ -9,10 +9,10 @@
  * Single source of truth: `server/internal/handler/reserved_slugs.json`.
  * The Go backend embeds that JSON; this file is regenerated from it.
  *
- * Convention for new global routes (CLAUDE.md): use a single word
- * (`/login`, `/inbox`) or `/{noun}/{verb}` (`/workspaces/new`). Hyphenated
- * root-level word groups (`/new-workspace`, `/create-team`) collide with
- * common user workspace names — see PR for full discussion.
+ * 新增全局路由应使用单个单词（`/login`、`/inbox`）或 `/{noun}/{verb}`
+ *（`/workspaces/new`）。根级连字符词组（`/new-workspace`、`/create-team`）
+ * 容易与常见 workspace 名冲突。见
+ * apps/docs/content/docs/developers/conventions.zh.mdx「路由」。
  */
 export const RESERVED_SLUGS: ReadonlySet<string> = new Set([
   // Auth flow

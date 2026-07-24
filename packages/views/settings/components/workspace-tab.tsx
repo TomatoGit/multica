@@ -280,13 +280,10 @@ export function WorkspaceTab() {
   const handleConfirmDelete = async () => {
     if (!workspace) return;
     setActionId("delete-workspace");
-    // Await the DELETE with the dialog in its loading state, and only
-    // navigate on success (CLAUDE.md: flows that navigate must await the
-    // server; no optimistic removal). The realtime `workspace:deleted`
-    // handler skips self-initiated deletes via the pending-delete registry,
-    // so it can't race this navigation with its own full-page relocate.
-    // On failure the dialog stays open, the cache was never touched, and
-    // the user is exactly where they started.
+    // 对话框保持加载状态并等待 DELETE 完成，仅在成功后导航，不做乐观删除。
+    // realtime 的 `workspace:deleted` handler 会通过 pending-delete registry
+    // 跳过本端发起的删除，因此不会与这里的导航竞争。失败时保留对话框和原缓存，
+    // 用户仍停留在原位置。见 docs/agents/frontend.md「状态与实时事件」。
     try {
       await deleteWorkspace.mutateAsync(workspace.id);
       setDeleteDialogOpen(false);

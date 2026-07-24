@@ -13,10 +13,9 @@ import { issueKeys } from "./issue-keys";
 export { issueKeys } from "./issue-keys";
 
 /**
- * Workspace-wide issue list. Backend filters by `X-Workspace-Slug` header
- * (root CLAUDE.md "All queries filter by workspace_id"), so we pass an
- * empty params object — server returns every issue the user is allowed to
- * see in the current workspace.
+ * Workspace 范围的 issue 列表。后端通过 `X-Workspace-Slug` header 过滤，
+ * 因此这里传空参数对象；服务端会返回用户在当前 workspace 中有权查看的
+ * 全部 issue。
  *
  * Cache shape: flat `Issue[]` (we strip `.issues` from the response) so
  * the WS updaters can patch this list with the same shape as

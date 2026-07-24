@@ -3,12 +3,11 @@
  * (member/agent → avatar URL or initials chip), stripped down for phone use:
  * no hover card, no nested focus management.
  *
- * Behavioral parity rules (apps/mobile/CLAUDE.md):
+ * 行为一致性规则（见 apps/mobile/CLAUDE.md
+ *「Behavioral parity with web/desktop」）：
  *   - Same actor type → same name → same initials. Lookup is shared via
  *     useActorLookup which reads the same MemberWithUser / Agent lists.
- *   - Agents get distinct visual treatment (brand-tinted background) to
- *     match web's "agents render with distinct styling" rule from the
- *     repo-root CLAUDE.md "Agent Assignees" section.
+ *   - Agent 使用独立的品牌色背景，与 Web 的差异化样式保持一致。
  *
  * Presence dot: opt-in via `showPresence`. Mirrors web's `showStatusDot`
  * (`packages/views/common/actor-avatar.tsx:51`). The prop is opt-in (default

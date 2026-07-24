@@ -12,9 +12,9 @@
  * the inline status icon. New callers should default to false unless they
  * mix multiple statuses inside a single ungrouped list.
  *
- * Behavioral parity:
- *   - Same `Issue` type, same `assignee_type`/`assignee_id` semantics
- *     (root CLAUDE.md "Data identity must agree").
+ * 行为一致性：
+ *   - 使用相同的 `Issue` 类型，以及相同的 `assignee_type`/`assignee_id`
+ *     语义。见 apps/mobile/CLAUDE.md「Behavioral parity with web/desktop」。
  *   - Mirrors web `packages/views/issues/components/list-row.tsx:52`:
  *     render the assignee whenever `assignee_type && assignee_id` are both
  *     truthy — `ActorAvatar` itself handles member / agent / squad rendering

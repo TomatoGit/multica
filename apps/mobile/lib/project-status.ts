@@ -68,9 +68,8 @@ export const PROJECT_PRIORITY_BARS: Record<ProjectPriority, number> = {
   none: 0,
 };
 
-// Fallback for unknown server values per "Enum drift downgrades, not crashes"
-// (root CLAUDE.md "API Response Compatibility"). Returns a sensible default
-// so a future enum value still renders a labelled chip.
+// 未知服务端取值使用合理默认值，使未来新增枚举仍能显示带标签的 chip。
+// 见 apps/mobile/CLAUDE.md「Behavioral parity with web/desktop」。
 export function projectStatusLabel(value: string): string {
   return (PROJECT_STATUS_LABEL as Record<string, string>)[value] ?? value;
 }

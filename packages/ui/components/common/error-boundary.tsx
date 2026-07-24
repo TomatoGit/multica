@@ -25,12 +25,12 @@ interface ErrorBoundaryState {
 const INITIAL_STATE: ErrorBoundaryState = { error: null };
 
 /**
- * Section-level error boundary. Wrap individual UI sections (the timeline,
- * the comment list, a sidebar panel) so a render-time crash in one section
- * does not blank the whole page. See CLAUDE.md "API Response Compatibility".
+ * 区块级错误边界。包裹时间线、评论列表、侧边栏面板等独立 UI 区块，
+ * 避免单个区块渲染崩溃导致整个页面空白。见
+ * docs/agents/frontend.md「API 响应」。
  *
- * For full-page takeovers prefer route-level error UIs (Next.js error.tsx,
- * router error elements). This component is for the in-page recovery case.
+ * 全页错误优先使用路由级错误 UI（Next.js error.tsx、router error element）；
+ * 本组件只用于页面内部恢复。
  */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = INITIAL_STATE;

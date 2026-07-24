@@ -9,10 +9,9 @@ import {
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import type { Workspace } from "@multica/core/types";
 
-// Hook tests for @multica/core/paths live here because packages/core/ runs
-// Vitest in node environment (no jsdom). packages/views/ already has jsdom +
-// @testing-library/react configured, so it's the correct home per CLAUDE.md
-// testing rules ("shared UI components live in packages/views/*.test.tsx").
+// @multica/core/paths 的 hook 测试放在这里，因为 packages/core/ 的 Vitest
+// 使用 node 环境（无 jsdom），而 packages/views/ 已配置 jsdom 和
+// @testing-library/react。归属规则见 docs/agents/frontend.md「测试」。
 
 function makeWorkspace(over: Partial<Workspace>): Workspace {
   return {

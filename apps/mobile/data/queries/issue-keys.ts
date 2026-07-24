@@ -2,10 +2,10 @@
  * Centralised TanStack Query keys for issue-domain queries on mobile.
  *
  * Prefix shape mirrors web's `packages/core/issues/queries.ts` so the same
- * WS invalidation surface (e.g. `invalidateQueries({ queryKey: issueKeys.myAll(wsId) })`)
- * eventually drives both clients. Keys are workspace-scoped — switching
- * workspace flips wsId and the cache moves automatically (root CLAUDE.md
- * "Workspace-scoped queries must key on wsId").
+ * WS invalidation surface（如
+ * `invalidateQueries({ queryKey: issueKeys.myAll(wsId) })`）最终可同时驱动
+ * 两端。key 按 workspace 划分；切换 workspace 会改变 wsId，缓存随之自动
+ * 切换。见 apps/mobile/CLAUDE.md「Query / mutation factory pattern」。
  */
 import type { ListIssuesParams } from "@multica/core/types";
 

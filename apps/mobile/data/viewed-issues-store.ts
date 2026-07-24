@@ -52,10 +52,9 @@ export const useViewedIssuesStore = create<State>((set) => ({
     }),
 }));
 
-/** Stable empty array — Zustand selectors that return a fresh `[]` each
- *  call trigger an infinite re-render loop in useSyncExternalStore
- *  (see CLAUDE.md "Common Zustand footguns"). All "no entry" paths
- *  share this single frozen reference. */
+/** 稳定的空数组。Zustand selector 每次返回新的 `[]` 会在
+ *  useSyncExternalStore 中触发无限重渲染，因此所有“无记录”分支共用这一
+ *  冻结引用。 */
 const EMPTY_IDS: readonly string[] = Object.freeze([]);
 
 /** Selector — current workspace's viewed-issue ids in most-recent-first

@@ -5,9 +5,9 @@
  * loose() so unknown server fields pass through, defaults so a missing
  * array doesn't take the page down).
  *
- * If web/desktop later need these same schemas, promote them to core; until
- * then they live here so mobile satisfies its "Parse, don't cast" rule
- * (root CLAUDE.md "API Response Compatibility") for these endpoints.
+ * 如果 Web/Desktop 后续也需要这些 schema，再提升到 core；在此之前保留在
+ * Mobile 内，以满足 apps/mobile/CLAUDE.md「Data layer helpers」中的
+ * “Parse, don't cast”规则。
  */
 import { z } from "zod";
 import type {
@@ -110,13 +110,12 @@ export const EMPTY_COMMENT: Comment = {
   resolved_by_id: null,
 };
 
-/** GET/PUT /api/notification-preferences. Preferences are partial — absent
- *  keys mean "default (= all)", an explicit "muted" turns the group off.
- *  Loose() so future group additions on the backend don't break parsing.
- *  Value type is z.string() (not z.enum) so a future server-side value like
- *  "snoozed" downgrades gracefully (read sites treat unknown as enabled)
- *  instead of failing schema parse and dropping the entire preferences map.
- *  Per CLAUDE.md "Enum drift downgrades, not crashes". */
+/** GET/PUT /api/notification-preferences。preferences 为部分数据：缺失 key
+ *  表示默认（全部），显式 "muted" 表示关闭该组。使用 loose()，避免后端新增
+ *  分组破坏解析；值使用 z.string() 而非 z.enum，使未来的 "snoozed" 等取值
+ *  能降级处理（读取端将未知值视为启用），而不是因 schema 解析失败丢弃整个
+ *  preferences map。见 apps/mobile/CLAUDE.md
+ * 「Behavioral parity with web/desktop」。 */
 export const NotificationPreferenceResponseSchema = z.object({
   workspace_id: z.string().default(""),
   preferences: z.record(z.string(), z.string()).default({}),
@@ -248,8 +247,8 @@ export const ChatSessionSchema: z.ZodType<ChatSession> = z.object({
   agent_id: z.string().default(""),
   creator_id: z.string().default(""),
   title: z.string().default(""),
-  // Enum drift defense (root CLAUDE.md "Enum drift downgrades, not crashes"):
-  // unknown server values fall back to "active" so the row still renders.
+  // 防御枚举漂移：服务端未知取值回退到 "active"，确保该行仍可渲染。
+  // 见 apps/mobile/CLAUDE.md「Behavioral parity with web/desktop」。
   status: z.enum(["active", "archived"]).catch("active"),
   has_unread: z.boolean().default(false),
   // Unread assistant messages after the read cursor. Optional (not defaulted)
@@ -309,9 +308,9 @@ export const TaskMessagePayloadSchema: z.ZodType<TaskMessagePayload> = z.object(
   issue_id: z.string().default(""),
   chat_session_id: z.string().optional(),
   seq: z.number().default(0),
-  // Enum drift defense: unknown server-side types fall back to "text" so
-  // the row still renders (as a plain markdown chunk) instead of crashing
-  // the timeline. Matches root CLAUDE.md "Enum drift downgrades, not crashes".
+  // 防御枚举漂移：服务端未知类型回退到 "text"，将该行作为普通 Markdown
+  // 片段继续渲染，避免时间线崩溃。见 apps/mobile/CLAUDE.md
+  //「Behavioral parity with web/desktop」。
   type: z
     .enum(["text", "thinking", "tool_use", "tool_result", "error"])
     .catch("text"),
@@ -334,9 +333,9 @@ export const EMPTY_TASK_MESSAGE_LIST: TaskMessagePayload[] = [];
 // the schemas live mobile-side. Promote to core when web adopts the same
 // defense.
 //
-// match_source is the server's hint of which field matched. Enum-drift defense
-// (root CLAUDE.md "Enum drift downgrades, not crashes"): unknown values fall
-// back to "title" so the row still renders without a snippet line.
+// match_source 是服务端提供的命中字段提示。为防御枚举漂移，未知取值回退为
+// "title"，使该行即使没有摘要也能继续渲染。见 apps/mobile/CLAUDE.md
+//「Behavioral parity with web/desktop」。
 
 const SearchIssueResultSchema = IssueSchema.safeExtend({
   match_source: z.enum(["title", "description", "comment"]).catch("title"),
@@ -374,9 +373,9 @@ export const EMPTY_SEARCH_PROJECTS_RESPONSE: SearchProjectsResponse = {
 // Mirrors AgentTask in packages/core/types/agent.ts. Backend handlers:
 //   GET  /api/issues/{id}/active-task → { tasks: AgentTask[] } (may be empty)
 //   GET  /api/issues/{id}/task-runs   → AgentTask[]
-// Lenient on every field — status / kind / failure_reason all use `.catch()`
-// so a future server-side enum value renders a generic fallback rather than
-// crashing the row (root CLAUDE.md "Enum drift downgrades, not crashes").
+// 所有字段均宽松解析：status、kind、failure_reason 都使用 `.catch()`，
+// 让服务端未来新增的枚举取值显示为通用回退，而不是导致该行崩溃。见
+// apps/mobile/CLAUDE.md「Behavioral parity with web/desktop」。
 
 export const AgentTaskSchema: z.ZodType<AgentTask> = z.object({
   id: z.string(),

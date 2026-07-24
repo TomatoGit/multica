@@ -33,7 +33,7 @@ export interface ParseOptions {
  * expected `T`; downstream code is already responsible for handling unknown
  * enum values via `default`-bearing switches and optional chaining.
  *
- * See CLAUDE.md "API Response Compatibility" for when to reach for this.
+ * 适用场景见 docs/agents/frontend.md「API 响应」。
  */
 export function parseWithFallback<T>(
   data: unknown,

@@ -1,9 +1,8 @@
-/** A Slack bot installation bound to a single Multica agent (MUL-3666).
+/** 绑定到单个 Multica agent 的 Slack bot 安装记录（MUL-3666）。
  *
- * Wire shape mirrors `SlackInstallationResponse` in
- * `server/internal/handler/slack.go`. New fields the backend adds in the
- * future MUST default to optional so older desktop builds keep parsing the
- * response — see CLAUDE.md → API Compatibility. */
+ * 传输结构对应 `server/internal/handler/slack.go` 中的
+ * `SlackInstallationResponse`。后端后续新增字段必须保持可选，确保旧版桌面端
+ * 仍能解析响应。见 docs/agents/frontend.md「API 响应」。 */
 export interface SlackInstallation {
   id: string;
   workspace_id: string;

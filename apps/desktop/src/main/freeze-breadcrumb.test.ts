@@ -63,9 +63,8 @@ describe("freeze breadcrumb round-trip", () => {
   });
 });
 
-// The breadcrumb crosses a process boundary (main writes, renderer flushes via
-// IPC) and lives across app versions — a future write shape or a corrupt file
-// must never throw into boot. CLAUDE.md "API Response Compatibility".
+// breadcrumb 跨进程传递（主进程写入，渲染进程通过 IPC 刷新）且会跨版本保留；
+// 后续写入格式或损坏文件都不能阻断启动。见 docs/agents/frontend.md「API 响应」。
 describe("freeze breadcrumb defends against malformed input", () => {
   it("returns null when no file exists", () => {
     expect(readAndClearFreezeBreadcrumb(tempFile())).toBeNull();

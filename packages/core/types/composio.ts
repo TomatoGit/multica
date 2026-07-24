@@ -1,9 +1,8 @@
-/** A Composio toolkit as surfaced by GET /api/integrations/composio/toolkits.
+/** GET /api/integrations/composio/toolkits 返回的 Composio toolkit。
  *
- * Wire shape mirrors `ComposioToolkitResponse` in
- * `server/internal/handler/integrations_composio.go`. New fields the backend
- * adds later MUST stay optional so older desktop builds keep parsing — see
- * CLAUDE.md → API Response Compatibility. */
+ * 传输结构对应 `server/internal/handler/integrations_composio.go` 中的
+ * `ComposioToolkitResponse`。后端后续新增字段必须保持可选，确保旧版桌面端
+ * 仍能解析。见 docs/agents/frontend.md「API 响应」。 */
 export interface ComposioToolkit {
   slug: string;
   name: string;

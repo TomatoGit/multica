@@ -500,12 +500,10 @@ function LarkAgentBotStatusRow({
 // backend authorizes DELETE with the same canManageAgent check (MUL-4213)
 // and would 403 anyone else, which makes a redundant gate here dead code.
 //
-// The dev-console host depends on which Lark cloud the bot lives on:
-// Feishu (mainland) bots are managed at open.feishu.cn, Lark
-// (international) bots at open.larksuite.com. The region is auto-detected
-// at install time and surfaced per installation on the listings
-// response; an older server that omits `region` defaults to Feishu
-// (API-compat — see CLAUDE.md).
+// 开发者控制台域名取决于机器人所在的 Lark 云：飞书（中国大陆）使用
+// open.feishu.cn，Lark（国际版）使用 open.larksuite.com。安装时自动检测
+// region，并随安装列表响应返回；旧版服务端缺少 `region` 时回退到飞书。
+// 见 docs/agents/frontend.md「API 响应」。
 function larkDevConsoleHost(region?: string): string {
   return region === "lark"
     ? "https://open.larksuite.com"
