@@ -30,8 +30,8 @@ import (
 //  2. Per-section prose compression — Available Commands, Issue
 //     Metadata, Mentions, Sub-issue Creation, Comment Formatting,
 //     Always Use CLI, Background Task Safety, Task Initiator,
-//     Repositories, Output are all tightened. Every test-asserted phrase
-//     stays.
+//     Repositories, Repository Setup Preflight, Output are all
+//     tightened. Every test-asserted phrase stays.
 //
 // Background Task Safety is emitted by `writeBackgroundTaskSafetySlim`
 // below.
@@ -285,18 +285,34 @@ func writeRepositories(b *strings.Builder, ctx TaskContextForEnv) {
 	b.WriteString("\n")
 }
 
-// writeProjectContext emits the Project Context section when the issue
-// belongs to a project.
+// writeRepositorySetupPreflight emits a stack-agnostic readiness check for
+// every task surface that can perform repository work. It deliberately asks
+// the agent to infer the repository's own setup contract instead of naming a
+// package manager or forcing a reinstall on a warm workdir.
+func writeRepositorySetupPreflight(b *strings.Builder) {
+	b.WriteString("## Repository Setup Preflight\n\n")
+	b.WriteString("Before editing code or running build/test commands in a repository (after `multica repo checkout`, or immediately when working in an existing local directory):\n\n")
+	b.WriteString("- Read the repository instructions and setup documentation (`AGENTS.md`, `README`, development docs), plus the relevant dependency manifests and lockfiles.\n")
+	b.WriteString("- Identify the stack and package/dependency manager, then determine whether the required dependencies and tools are already usable.\n")
+	b.WriteString("- If dependencies are missing, stale, or readiness is uncertain, run the repository's documented, reproducible setup command before proceeding. Do not reinstall when the existing environment is demonstrably ready.\n")
+	b.WriteString("- Check that setup did not unexpectedly modify dependency manifests or lockfiles; investigate unexpected changes before continuing.\n")
+	b.WriteString("- Do not use a failing build or test run as the way to discover that dependencies were not prepared.\n\n")
+}
+
+// writeProjectContext emits the Project Context section when the task carries
+// an active project. Project context is independent of the task surface: an
+// issue inherits it from its project, while a chat receives it from the
+// project selected on the chat session.
 func writeProjectContext(b *strings.Builder, ctx TaskContextForEnv) {
 	if ctx.ProjectID == "" && len(ctx.ProjectResources) == 0 {
 		return
 	}
 	b.WriteString("## Project Context\n\n")
 	if ctx.ProjectTitle != "" {
-		fmt.Fprintf(b, "This issue belongs to **%s**.\n\n", ctx.ProjectTitle)
+		fmt.Fprintf(b, "The active project for this task is **%s**.\n\n", ctx.ProjectTitle)
 	}
 	if desc := strings.TrimSpace(ctx.ProjectDescription); desc != "" {
-		b.WriteString("Project description — durable context the project owner set for every task in this project:\n\n")
+		b.WriteString("Project description — durable context the project owner set for work in this project:\n\n")
 		b.WriteString(desc)
 		b.WriteString("\n\n")
 	}
@@ -623,7 +639,8 @@ func writeOutput(b *strings.Builder, kind taskKind, ctx TaskContextForEnv) {
 //	Available Commands    |   full  |  full  |   full    |   minimal    | full
 //	Comment Formatting    |    ✓    |   ✓    |     —     |      —       |  —
 //	Repositories          |    △    |   △    |     △     |      —       |  △
-//	Project Context       |    △    |   △    |     —     |      —       |  —
+//	Project Context       |    △    |   △    |     △     |      △       |  △
+//	Repository Preflight |    ✓    |   ✓    |     ✓     |      —       |  ✓
 //	Issue Metadata        |    ✓    |   ✓    |     —     |      —       |  —
 //	Instruction Precedence|    —    |   ✓    |     —     |      —       |  —
 //	Sub-issue Creation    |    ✓    |   ✓    |     —     |      —       |  —
@@ -663,8 +680,13 @@ func buildMetaSkillContentSlim(provider string, ctx TaskContextForEnv) string {
 		writeRepositories(&b, ctx)
 	}
 
+	writeProjectContext(&b, ctx)
+
+	if kind != kindQuickCreate {
+		writeRepositorySetupPreflight(&b)
+	}
+
 	if kind.hasIssueContext() {
-		writeProjectContext(&b, ctx)
 		writeIssueMetadata(&b)
 	}
 
